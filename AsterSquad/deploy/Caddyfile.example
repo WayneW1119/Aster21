@@ -1,0 +1,12 @@
+# Replace squad.example.com and configure SQUAD_PUBLIC_URL with the same origin.
+squad.example.com {
+    @squad path /squad /squad/*
+    handle @squad {
+        reverse_proxy 127.0.0.1:19910
+    }
+    @relay path /relay /relay/*
+    handle @relay {
+        reverse_proxy 127.0.0.1:19910
+    }
+    respond "Not found" 404
+}

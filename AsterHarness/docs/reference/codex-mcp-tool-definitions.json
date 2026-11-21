@@ -1,0 +1,184 @@
+{
+  "source_commit": "c419fd01a70dd1d05356da443ac44328bda2e6f4",
+  "provenance": "Reconstructed from bundled Rust constructors and serializers; not a captured model request. English strings are copied from local Codex source.",
+  "with_sources_in_search_description": {
+    "tools": [
+      {
+        "type": "tool_search",
+        "execution": "client",
+        "description": "# Tool discovery\n\nSearches over deferred tool metadata with BM25 and exposes matching tools for the next model call.\n\nYou have access to tools from the following sources:\n- Google Drive: Use Google Drive as the single entrypoint for Drive, Docs, Sheets, and Slides work.\n- docs\nSome of the tools may not have been provided to you upfront, and you should use this tool (`tool_search`) to search for the required tools. For MCP tool discovery, always use `tool_search` instead of `list_mcp_resources` or `list_mcp_resource_templates`.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "number",
+              "description": "Maximum number of tools to return. Defaults to 8."
+            },
+            "query": {
+              "type": "string",
+              "description": "Search query for deferred tools."
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "type": "function",
+        "name": "list_mcp_resources",
+        "description": "Lists resources provided by MCP servers. Resources allow servers to share data that provides context to language models, such as files, database schemas, or application-specific information. Prefer resources over web search when possible.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cursor": {
+              "type": "string",
+              "description": "Opaque cursor from a previous list_mcp_resources call; omit for the first page."
+            },
+            "server": {
+              "type": "string",
+              "description": "MCP server name. Omit to list resources from every configured server."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      {
+        "type": "function",
+        "name": "list_mcp_resource_templates",
+        "description": "Lists resource templates provided by MCP servers. Parameterized resource templates allow servers to share data that takes parameters and provides context to language models, such as files, database schemas, or application-specific information. Prefer resource templates over web search when possible.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cursor": {
+              "type": "string",
+              "description": "Opaque cursor from a previous list_mcp_resource_templates call; omit for the first page."
+            },
+            "server": {
+              "type": "string",
+              "description": "MCP server name. Omit to list resource templates from every configured server."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      {
+        "type": "function",
+        "name": "read_mcp_resource",
+        "description": "Read a specific resource from an MCP server given the server name and resource URI.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "server": {
+              "type": "string",
+              "description": "MCP server name exactly as configured. Must match the 'server' field returned by list_mcp_resources."
+            },
+            "uri": {
+              "type": "string",
+              "description": "Resource URI to read. Must be one of the URIs returned by list_mcp_resources."
+            }
+          },
+          "required": [
+            "server",
+            "uri"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ]
+  },
+  "with_sources_in_world_state": {
+    "tools": [
+      {
+        "type": "tool_search",
+        "execution": "client",
+        "description": "# Tool discovery\n\nSearches over deferred tool metadata with BM25 and exposes matching tools for the next model call.\n\nSome of the tools may not have been provided to you upfront, and you should use this tool (`tool_search`) to search for the required tools. For MCP tool discovery, always use `tool_search` instead of `list_mcp_resources` or `list_mcp_resource_templates`.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "number",
+              "description": "Maximum number of tools to return. Defaults to 8."
+            },
+            "query": {
+              "type": "string",
+              "description": "Search query for deferred tools."
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "type": "function",
+        "name": "list_mcp_resources",
+        "description": "Lists resources provided by MCP servers. Resources allow servers to share data that provides context to language models, such as files, database schemas, or application-specific information. Prefer resources over web search when possible.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cursor": {
+              "type": "string",
+              "description": "Opaque cursor from a previous list_mcp_resources call; omit for the first page."
+            },
+            "server": {
+              "type": "string",
+              "description": "MCP server name. Omit to list resources from every configured server."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      {
+        "type": "function",
+        "name": "list_mcp_resource_templates",
+        "description": "Lists resource templates provided by MCP servers. Parameterized resource templates allow servers to share data that takes parameters and provides context to language models, such as files, database schemas, or application-specific information. Prefer resource templates over web search when possible.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cursor": {
+              "type": "string",
+              "description": "Opaque cursor from a previous list_mcp_resource_templates call; omit for the first page."
+            },
+            "server": {
+              "type": "string",
+              "description": "MCP server name. Omit to list resource templates from every configured server."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      {
+        "type": "function",
+        "name": "read_mcp_resource",
+        "description": "Read a specific resource from an MCP server given the server name and resource URI.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "server": {
+              "type": "string",
+              "description": "MCP server name exactly as configured. Must match the 'server' field returned by list_mcp_resources."
+            },
+            "uri": {
+              "type": "string",
+              "description": "Resource URI to read. Must be one of the URIs returned by list_mcp_resources."
+            }
+          },
+          "required": [
+            "server",
+            "uri"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ]
+  }
+}

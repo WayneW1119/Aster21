@@ -1,0 +1,10 @@
+# Replace the URL with a complete Streamable HTTP endpoint.
+# Keep only the authentication fields required by that service.
+[mcp_servers.remote]
+url = "https://mcp.example.com/mcp"
+bearer_token_env_var = "REMOTE_MCP_TOKEN"
+http_headers = { "X-Project" = "example" }
+env_http_headers = { "X-API-Key" = "REMOTE_MCP_KEY" }
+required = true
+startup_timeout_sec = 10
+tool_timeout_sec = 60

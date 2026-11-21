@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+data/
+*-data/
+artifacts/
+build/
+dist/
+.env
+.env.*
+!.env.example
+*.env
+*.token
+*.db
+*.db-*
+*.sqlite*
+*.log
+*.local.json
+credentials/
+.DS_Store
+
+# Operator data when an explicit data root is the checkout itself
+/instance.lock

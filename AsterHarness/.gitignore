@@ -1,0 +1,49 @@
+# Credentials and local runtime state
+.env
+.env.*
+!.env.example
+.harness/
+.aster/
+test_runs/
+traces/
+/workspace/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.egg-info/
+
+# Developer-only mobile test application and deployment
+web/
+scripts/mobile_*.py
+scripts/resident_terminal.py
+scripts/setup_mobile_network.ps1
+docs/mobile-*.md
+tests/test_mobile_*.py
+tests/test_resident_terminal.py
+
+# Local historical experiments, migrations and one-off acceptance runs
+experiments/
+docs/design/migration-*.md
+scripts/migration_check.py
+scripts/long_task_check.py
+scripts/continue_long_task_check.py
+scripts/audit_long_task.py
+scripts/nonstream_check.py
+scripts/timer_check.py
+tests/test_evaluation_reports.py
+tests/test_patch_full_evaluation.py
+
+# Optional upstream checkout; retain attribution only
+third_party/codex/*
+!third_party/codex/LICENSE
+!third_party/codex/NOTICE
+!third_party/codex/README.md
+
+# Operator data when an explicit data root is the checkout itself
+/agents/
+/credentials/
+/threads/
+/.management.lock

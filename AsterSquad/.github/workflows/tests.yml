@@ -1,0 +1,55 @@
+name: Squad checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout Harness dependency
+        uses: actions/checkout@v4
+        with:
+          repository: WayneW1119/AsterHarness
+          ref: bf7a144b320eaa03a251b952a8f9ddd2d10c15cf
+          path: .ci-deps/harness
+          ssh-key: ${{ secrets.ASTER_HARNESS_READ_KEY }}
+          persist-credentials: false
+      - name: Checkout Relay dependency
+        uses: actions/checkout@v4
+        with:
+          repository: WayneW1119/Relay
+          ref: 511dbe213a457e7dfe1ee93e961b56331d5b6f57
+          path: .ci-deps/relay
+          ssh-key: ${{ secrets.RELAY_READ_KEY }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Linux sandbox
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap libseccomp2
+          # Hosted Ubuntu runners may restrict unprivileged bwrap via AppArmor.
+          if sysctl kernel.apparmor_restrict_unprivileged_userns >/dev/null 2>&1; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          bwrap --unshare-user --uid 0 --gid 0 --ro-bind / / -- /bin/true
+      - name: Public runtime and independent Relay
+        run: |
+          python -m pip install './.ci-deps/harness[mcp,code-mode,chatgpt]' ./.ci-deps/relay
+          python -m pip install -e '.[dev]'
+      - run: python -m unittest discover -s tests -v
+      - run: python -m build
+      - name: Browser checks
+        if: matrix.python == '3.11'
+        run: |
+          python -m playwright install --with-deps chromium
+          python tests/browser_auth.py
+          python tests/browser_independent_auth.py
+          ASTER_BROWSER_PREFIX=/squad python tests/browser_console.py

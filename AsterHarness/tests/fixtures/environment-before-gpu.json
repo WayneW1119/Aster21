@@ -1,0 +1,63 @@
+{
+  "state": {
+    "policy_version": 1,
+    "rule_precedence": "most_specific",
+    "workspace": "/workspace",
+    "default_access": "deny",
+    "rules": [
+      {
+        "path": "/",
+        "access": "read"
+      },
+      {
+        "path": "/workspace",
+        "access": "write"
+      },
+      {
+        "path": "/private",
+        "access": "deny"
+      }
+    ],
+    "protected_read": [
+      "/usr/lib"
+    ],
+    "protected_deny": [
+      "/private"
+    ],
+    "network": "unchanged",
+    "approvals": "never"
+  },
+  "item": {
+    "type": "message",
+    "role": "developer",
+    "text": "<environment_context>\n<filesystem policy_version=\"1\">\n<workspace_roots><root>/workspace</root></workspace_roots>\n<permission_profile type=\"managed\"><file_system type=\"restricted\" default_access=\"deny\">\n<entry access=\"deny\"><special>:root</special></entry>\n<entry access=\"read\"><path>/</path></entry>\n<entry access=\"write\"><path>/workspace</path></entry>\n<entry access=\"deny\" escalatable=\"false\" protected=\"true\"><path>/private</path></entry>\n<entry access=\"deny\" escalatable=\"false\" protected=\"true\"><path>/private</path></entry>\n<read_only_ceiling><path>/usr/lib</path></read_only_ceiling>\n</file_system></permission_profile></filesystem>\nwrite includes read. deny blocks content except explicitly reopened narrower paths; it does not promise to hide mount point names or existence.\nUse the highest policy_version; a newer environment context supersedes older filesystem rules, rather than accumulating them.\nMore specific paths override broader paths; equal paths use deny > write > read. Host-protected denies cannot be reopened and trusted runtime paths remain read-only. The workspace does not change with cd.\n/proc exposes sandbox processes, /dev exposes minimal devices, and /run is an isolated read-only runtime view; source state grants are private exceptions.\nFilesystem restrictions are enforced for local commands and scripts. Network access is unchanged; new host Unix/vsock connections are blocked.\nNo approval or automatic unsandboxed retry is available. Private memory/history use their dedicated host tools.\nPolicy changes stop old command/cell handles, reconnect local MCPs and restart registered services; one-shot work is not replayed.\n</environment_context>",
+    "_environment_state": {
+      "policy_version": 1,
+      "rule_precedence": "most_specific",
+      "workspace": "/workspace",
+      "default_access": "deny",
+      "rules": [
+        {
+          "path": "/",
+          "access": "read"
+        },
+        {
+          "path": "/workspace",
+          "access": "write"
+        },
+        {
+          "path": "/private",
+          "access": "deny"
+        }
+      ],
+      "protected_read": [
+        "/usr/lib"
+      ],
+      "protected_deny": [
+        "/private"
+      ],
+      "network": "unchanged",
+      "approvals": "never"
+    }
+  }
+}

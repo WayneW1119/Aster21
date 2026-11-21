@@ -1,0 +1,101 @@
+name: Core checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Linux filesystem sandbox prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap libseccomp2
+          # Only the disposable CI runner: permit unprivileged sandbox namespaces.
+          if sysctl kernel.apparmor_restrict_unprivileged_userns >/dev/null 2>&1; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          bwrap --unshare-user --uid 0 --gid 0 --ro-bind / / -- /bin/true
+      - name: Core regression tests (no model credentials)
+        run: |
+          python -m pip install .
+          python -m unittest discover -s tests -v
+      - name: Install package
+        run: python -m pip install .
+      - name: Installed CLI and packaged instructions
+        working-directory: /tmp
+        run: |
+          aster-harness --help
+          python -m aster.compact_trace --help
+          python -m aster.render_trace --help
+          python -c "from agent_harness.core.session import SessionConfiguration; assert SessionConfiguration().base_instructions"
+          python "$GITHUB_WORKSPACE/examples/sdk/offline.py" --directory "$RUNNER_TEMP/aster-installed-sdk"
+
+  mcp:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Linux filesystem sandbox prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap libseccomp2
+          # Only the disposable CI runner: permit unprivileged sandbox namespaces.
+          if sysctl kernel.apparmor_restrict_unprivileged_userns >/dev/null 2>&1; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          bwrap --unshare-user --uid 0 --gid 0 --ro-bind / / -- /bin/true
+      - name: Install optional MCP and Code Mode runtimes
+        run: python -m pip install '.[mcp,code-mode,chatgpt]'
+      - name: Real stdio and Streamable HTTP MCP integration (no model credentials)
+        run: |
+          python -m unittest discover -s tests -p test_mcp.py -v
+          python -m unittest discover -s tests -p test_mcp_on_demand.py -v
+          python -m unittest discover -s tests -p test_mcp_http.py -v
+          python -m unittest discover -s tests -p test_mcp_runtime.py -v
+          python -m unittest discover -s tests -p test_sdk.py -v
+          python -m unittest discover -s tests -p test_code_mode.py -v
+          python -m unittest discover -s tests -p test_chatgpt_auth.py -v
+
+  local-ipc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install native rendering and sandbox prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap libseccomp2 libreoffice-writer fonts-dejavu-core
+          if sysctl kernel.apparmor_restrict_unprivileged_userns >/dev/null 2>&1; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          python -m pip install .
+      - name: IPC boundaries and real LibreOffice rendering
+        run: python -m unittest discover -s tests -p test_local_ipc.py -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Browser inside the member sandbox (both sandboxes enabled)
+        run: |
+          python -m pip install '.[mcp]'
+          npm install --prefix "$RUNNER_TEMP/browser" @playwright/mcp@0.0.85
+          node "$RUNNER_TEMP/browser/node_modules/playwright/cli.js" install --with-deps chromium
+          export ASTER_TEST_NODE="$(command -v node)"
+          export ASTER_TEST_BROWSER_MCP="$RUNNER_TEMP/browser/node_modules/@playwright/mcp/cli.js"
+          export ASTER_TEST_CHROMIUM="$(node -e "console.log(require('$RUNNER_TEMP/browser/node_modules/playwright').chromium.executablePath())")"
+          python -m unittest discover -s tests -p test_browser_sandbox.py -v

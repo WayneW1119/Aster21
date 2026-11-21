@@ -1,0 +1,40 @@
+{
+  "browser": {
+    "name": "Playwright browser",
+    "default": false,
+    "server": {
+      "command": "/usr/bin/env",
+      "args": [
+        "XDG_CACHE_HOME=/tmp/aster-browser/cache",
+        "XDG_CONFIG_HOME=/tmp/aster-browser/config",
+        "/path/to/node",
+        "/path/to/node_modules/@playwright/mcp/cli.js",
+        "--executable-path",
+        "/path/to/chrome",
+        "--isolated",
+        "--headless",
+        "--sandbox",
+        "--no-webmcp",
+        "--idle-timeout",
+        "300000"
+      ],
+      "startup_timeout_sec": 20,
+      "enabled_tools": [
+        "browser_navigate",
+        "browser_navigate_back",
+        "browser_snapshot",
+        "browser_click",
+        "browser_fill_form",
+        "browser_select_option",
+        "browser_press_key",
+        "browser_type",
+        "browser_tabs",
+        "browser_resize",
+        "browser_wait_for",
+        "browser_console_messages",
+        "browser_take_screenshot",
+        "browser_close"
+      ]
+    }
+  }
+}

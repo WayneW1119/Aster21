@@ -1,0 +1,26 @@
+{
+  "deepseek": {
+    "name": "deepseek-flash",
+    "url": "https://api.deepseek.com/responses",
+    "auth": "api_key",
+    "api_key_env": "DEEPSEEK_API_KEY"
+  },
+  "gpt": {
+    "name": "gpt-6.1-sol",
+    "url": "https://api.openai.com/v1/responses",
+    "auth": "api_key",
+    "api_key_env": "OPENAI_API_KEY"
+  },
+  "gpt-6.2-astra": {
+    "name": "gpt-6.2-astra",
+    "url": "https://api.openai.com/v1/responses",
+    "auth": "api_key",
+    "api_key_env": "OPENAI_API_KEY"
+  },
+  "gpt-6.2-sol": {
+    "name": "gpt-6.2-sol",
+    "url": "https://api.openai.com/v1/responses",
+    "auth": "api_key",
+    "api_key_env": "OPENAI_API_KEY"
+  }
+}

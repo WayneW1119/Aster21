@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aster-harness"
+version = "0.1.28"
+description = "Aster: an inspectable, event-driven resident Agent runtime"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["psutil>=6; sys_platform == 'win32'", "pywin32>=308; sys_platform == 'win32'", "jsonschema>=4.18,<5", "Pillow>=10,<13", "PyYAML>=6,<7"]
+
+[project.optional-dependencies]
+chatgpt = ["PyJWT[crypto]>=2.10,<3"]
+mcp = ["mcp>=1.26,<2"]
+code-mode = ["mini-racer>=0.14.1,<0.15"]
+
+[project.scripts]
+aster = "agent_harness.__main__:main"
+aster-harness = "agent_harness.__main__:main"
+harness = "agent_harness.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["agent_harness*", "aster*"]
+
+[tool.setuptools.package-data]
+agent_harness = ["core/*.md", "core/session/*.md", "assets/skills/*/*", "assets/skills/*/references/*"]
+
+[tool.setuptools.data-files]
+"share/aster-harness/third_party/codex" = ["third_party/codex/LICENSE", "third_party/codex/NOTICE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

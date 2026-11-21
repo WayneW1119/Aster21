@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aster-relay"
+version = "0.5.2"
+description = "Independent domain chat for people, agents and programs"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["psutil>=6; sys_platform == 'win32'", "pywin32>=308; sys_platform == 'win32'", "aiohttp>=3.9", "mcp>=1.10,<2", "uvicorn>=0.30", "webauthn>=2.8,<3"]
+
+[project.urls]
+Repository = "https://github.com/WayneW1119/Relay"
+Issues = "https://github.com/WayneW1119/Relay/issues"
+
+[project.optional-dependencies]
+dev = ["build>=1,<2", "playwright>=1.50,<2"]
+
+[project.scripts]
+relay = "relay.server:main"
+
+[tool.setuptools.packages.find]
+include = ["relay*"]
+
+[tool.setuptools.package-data]
+relay = ["web/*", "assets/skills/relay/*", "assets/skills/relay/references/*"]

@@ -1,0 +1,28 @@
+include .env.example
+include docs/sdk.md docs/chatgpt-plan.md
+recursive-include docs/design *.md
+exclude docs/design/migration-*.md
+recursive-include docs/reference *.md *.json
+recursive-include examples *.py *.md *.toml *.json
+recursive-include tests *.py *.json *.gz
+exclude tests/test_mobile_*.py tests/test_resident_terminal.py
+exclude tests/test_evaluation_reports.py tests/test_patch_full_evaluation.py
+include third_party/README.md third_party/codex/README.md
+include third_party/codex/LICENSE third_party/codex/NOTICE
+include scripts/budget_images_live_check.py
+include scripts/chatgpt_loopback.ps1
+include scripts/chatgpt_loopback_stdio.py
+include scripts/compact_check.py
+include scripts/custom_tools_live_check.py
+include scripts/history_query_agent.py
+include scripts/mcp_discovery_live_check.py
+include scripts/mcp_isolated_files_check.py
+include scripts/mcp_live_check.py
+include scripts/mcp_long_task_check.py
+include scripts/mcp_trace_report.py
+include scripts/mcp_worldstate_long_check.py
+include scripts/memory_patch_agent.py
+include scripts/navigation_check.py
+include scripts/performance_agent.py
+include scripts/smoke_agent.py
+global-exclude *.py[cod]

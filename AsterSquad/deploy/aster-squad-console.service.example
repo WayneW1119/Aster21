@@ -1,0 +1,19 @@
+[Unit]
+Description=Aster Squad console
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/aster-squad
+EnvironmentFile=%h/.config/aster-squad/service.env
+ExecStart=%h/.local/share/aster-squad/.venv/bin/python -m squad.fleet --root %h/.local/share/aster-squad/data --mode real
+Environment=PYTHONUNBUFFERED=1
+Environment=ASTER_SQUAD_STARTUP_UNIT=aster-squad-console.service
+UMask=0077
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=infinity
+KillMode=mixed
+
+[Install]
+WantedBy=default.target

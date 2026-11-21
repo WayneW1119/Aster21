@@ -1,0 +1,6 @@
+{
+  "rules": [
+    {"path": "reference", "access": "read"},
+    {"path": "private", "access": "deny"}
+  ]
+}

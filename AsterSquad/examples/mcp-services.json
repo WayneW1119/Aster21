@@ -1,0 +1,28 @@
+{
+  "web": {
+    "name": "网页检索 · Exa / DeepSeek",
+    "default": true,
+    "server": {
+      "url": "http://127.0.0.1:19930/mcp",
+      "bearer_token_env_var": "SQUAD_WEB_TOKEN",
+      "required": false,
+      "tool_timeout_sec": 120
+    }
+  },
+  "images": {
+    "name": "图片生成与编辑 · Codex 订阅",
+    "default": false,
+    "server": {
+      "command": "/path/to/aster-images/venv/bin/aster-images",
+      "args": [
+        "mcp"
+      ],
+      "env_vars": [
+        "ASTER_IMAGES_URL",
+        "ASTER_IMAGES_TOKEN"
+      ],
+      "required": false,
+      "tool_timeout_sec": 480
+    }
+  }
+}

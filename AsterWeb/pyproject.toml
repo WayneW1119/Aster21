@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aster-web"
+version = "0.1.0"
+description = "Independent web search and page retrieval MCP with explicit providers"
+requires-python = ">=3.11"
+readme = "README.md"
+dependencies = ["aiohttp>=3.9,<4", "mcp>=1.26,<2", "uvicorn>=0.30"]
+
+[project.urls]
+Repository = "https://github.com/WayneW1119/AsterWeb"
+
+[project.scripts]
+aster-web = "aster_web.server:main"
+
+[tool.setuptools.packages.find]
+include = ["aster_web*"]
+
+[tool.setuptools.package-data]
+aster_web = ["assets/skills/*/*"]
